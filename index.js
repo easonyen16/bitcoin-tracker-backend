@@ -6,7 +6,7 @@ const PurchaseRecord = require('./models/PurchaseRecord');
 const getBitcoinPrice = require('./utils/getBitcoinPrice');
 const BitcoinPriceRecord = require('./models/BitcoinPriceRecord');
 const app = express();
-const port = 5000;
+const port = 5050;
 
 app.get('/', (req, res) => {
   res.send('Hello, World!');
