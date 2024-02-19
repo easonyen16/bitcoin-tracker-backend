@@ -19,7 +19,7 @@ app.post('/purchase', async (req, res) => {
   try {
     const { amountTWD, bitcoinAmount } = req.body;
     // 计算购买时的比特币价格
-    const bitcoinPriceAtPurchase = amountTWD / bitcoinAmount;
+    const bitcoinPriceAtPurchase = Math.round(amountTWD / bitcoinAmount);
 
     const record = new PurchaseRecord({
       amountTWD,
