@@ -1,4 +1,6 @@
+require('dotenv').config();
 const express = require('express');
+const cors = require('cors');
 const cron = require('node-cron');
 const axios = require('axios');
 const mongoose = require('./db');
@@ -8,17 +10,25 @@ const BitcoinPriceRecord = require('./models/BitcoinPriceRecord');
 const app = express();
 const port = 5050;
 
+const corsOptions = {
+  origin: process.env.CORS_ORIGIN, // 只允许来自这个域名的请求
+};
+
+app.use(cors(corsOptions)); // 使用cors中间件并应用配置
+
 app.get('/', (req, res) => {
   res.send('Hello, World!');
 });
 
-app.use(express.json()); // 確保您的應用可以解析JSON請求體
+app.get('/', (req, res) => {
+  res.send('Hello, World!');
+});
 
-// 添加購買記錄的路由
+app.use(express.json());
+
 app.post('/purchase', async (req, res) => {
   try {
     const { amountTWD, bitcoinAmount } = req.body;
-    // 计算购买时的比特币价格
     const bitcoinPriceAtPurchase = Math.round(amountTWD / bitcoinAmount);
 
     const record = new PurchaseRecord({
@@ -33,7 +43,6 @@ app.post('/purchase', async (req, res) => {
   }
 });
 
-// 獲取所有購買記錄的路由
 app.get('/purchases', async (req, res) => {
     try {
       const records = await PurchaseRecord.find({});
