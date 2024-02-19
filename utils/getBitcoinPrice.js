@@ -1,4 +1,4 @@
-const BitcoinPriceRecord = require('./models/BitcoinPriceRecord');
+const BitcoinPriceRecord = require('../models/BitcoinPriceRecord');
 
 async function getBitcoinPrice() {
   try {
