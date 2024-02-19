@@ -16,20 +16,22 @@ app.use(express.json()); // 確保您的應用可以解析JSON請求體
 
 // 添加購買記錄的路由
 app.post('/purchase', async (req, res) => {
-    try {
-      const { amountTWD, bitcoinAmount } = req.body;
-      const bitcoinPriceAtPurchase = await getBitcoinPrice(); // 獲取當前比特幣價格
-      const record = new PurchaseRecord({
-        amountTWD,
-        bitcoinAmount,
-        bitcoinPriceAtPurchase
-      });
-      await record.save();
-      res.status(201).send(record);
-    } catch (error) {
-      res.status(400).send(error.message);
-    }
-  });  
+  try {
+    const { amountTWD, bitcoinAmount } = req.body;
+    // 计算购买时的比特币价格
+    const bitcoinPriceAtPurchase = amountTWD / bitcoinAmount;
+
+    const record = new PurchaseRecord({
+      amountTWD,
+      bitcoinAmount,
+      bitcoinPriceAtPurchase
+    });
+    await record.save();
+    res.status(201).send(record);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
 
 // 獲取所有購買記錄的路由
 app.get('/purchases', async (req, res) => {
